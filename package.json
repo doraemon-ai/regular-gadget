@@ -1,0 +1,37 @@
+{
+  "id": "32a74f98-1aef-473a-bda7-8e2dea9d5b64",
+  "name": "regular-gadget",
+  "version": "0.0.1",
+  "description": "支持正则提取的魔法道具",
+  "icon": "https://www.cainiaojc.com/static/images/tool/regexsucha.png",
+  "homepage": "https://regex.ai/",
+  "bugs": {
+    "url": "https://github.com/kaleai",
+    "email": "sharkale@qq.com"
+  },
+  "keywords": [
+    "regular"
+  ],
+  "author": "kale",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack-dev-server --config webpack.dev.config.js --open --progress"
+  },
+  "dependencies": {
+    "antd": "^5.5.2",
+    "axios": "^1.4.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@types/react-dom": "^18.2.4",
+    "babel-loader": "^9.1.2",
+    "html-webpack-plugin": "^5.5.1",
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.0.4",
+    "webpack": "^5.82.0",
+    "webpack-cli": "^5.1.1",
+    "webpack-dev-server": "^4.15.0"
+  }
+}
