@@ -20,7 +20,7 @@ class Controller {
     if (action === 'GENERATE_REGULARITY') {
       return axios({
         method: 'get',
-        url: 'http://127.0.0.1:7001/',
+        url: 'https://kale.zeabur.app/regular',
         params: {
           user_text: values.originText,
           user_highlight: values.selectText.join(','),
