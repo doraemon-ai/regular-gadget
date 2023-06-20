@@ -3,7 +3,7 @@
   "name": "regular-gadget",
   "version": "0.0.1",
   "description": "支持正则提取的AI魔法道具",
-  "icon": "https://www.cainiaojc.com/static/images/tool/regexsucha.png",
+  "icon": "https://chatgptdemo.com/wp-content/uploads/2023/04/regex-thumbnail-square.png",
   "homepage": "https://regex.ai",
   "bugs": {
     "url": "https://github.com/kaleai",
@@ -22,9 +22,11 @@
     "antd": "^5.5.2",
     "axios": "^1.4.0",
     "react": "^17.0.2",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
+    "@types/react-copy-to-clipboard": "^5.0.4",
     "@types/react-dom": "^18.2.4",
     "babel-loader": "^9.1.2",
     "html-webpack-plugin": "^5.5.1",

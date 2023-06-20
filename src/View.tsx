@@ -1,5 +1,6 @@
 import { ActionInfoType, IViewElementProps } from '../Interface'
-import { Button, Card, Col, Form, Input, Row, Select } from 'antd'
+import { Button, Card, Col, Form, Input, Row, Select, message } from 'antd'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 export enum ViewType {
   CARD_LIST = 'CARD_LIST'
@@ -14,8 +15,15 @@ export default (
   if (viewType === ViewType.CARD_LIST) {
     return <Row gutter={16}>
       {data.agent_output.map((item: string) => {
-        return <Col span={12}>
-          <Card title={item} extra={<a href="#">Copy</a>}>
+        return <Col key={'key_' + item} span={12}>
+          <Card title={item} extra={
+            <CopyToClipboard
+              text={item}
+              onCopy={() => message.success({ content: 'copy success~'})}
+            >
+              <Button type={'link'}>Copy</Button>
+            </CopyToClipboard>
+          }>
             {data.origin_text}
           </Card>
         </Col>
@@ -29,7 +37,7 @@ export default (
       sendAction({
         action: 'GENERATE_REGULARITY',
         values,
-        expectation
+        expectation,
       })
     }}
     >

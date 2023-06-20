@@ -35,7 +35,6 @@ class Controller {
           user_text: values.originText,
           user_highlight: values.selectText.join(','),
         },
-        withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
         },
