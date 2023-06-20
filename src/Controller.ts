@@ -9,6 +9,8 @@ class Controller {
     console.log('gid', gid)
   }
 
+  public onDestroy(){}
+
   public handleFeedback(feedbackInfo: FeedbackInfoType) {}
 
   public async handleAction({ action, expectation, values }: ActionInfoType): Promise<ActionHandleResultType> {
