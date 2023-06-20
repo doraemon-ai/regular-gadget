@@ -13,7 +13,7 @@ export default (
 
   if (viewType === ViewType.CARD_LIST) {
     return <Row gutter={16}>
-      {data.agent_output.map(item => {
+      {data.agent_output.map((item: string) => {
         return <Col span={12}>
           <Card title={item} extra={<a href="#">Copy</a>}>
             {data.origin_text}
