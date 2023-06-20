@@ -7,9 +7,10 @@ export enum SYS_ACTION_NAME {
   CHAT_BOX_SUBMIT = 'SYS_CHAT_BOX_SUBMIT'
 }
 
-export type InstallParams = {
-  onReceiveConversationData: ((data: ConversationDataType) => void) | undefined
+export type InstallProps = {
+  onReceiveActionHandleResult: ((data: ActionHandleResultType) => void) | undefined
   envInfo: Record<string, any>
+  gid: string
 }
 
 export type ViewElementInfoType = {
@@ -29,10 +30,19 @@ export type ActionInfoType = {
   values?: any
 }
 
-export type SuggestActionType = { label: string, actionInfo: ActionInfoType }
+export type FeedbackInfoType = {
+  like: boolean
+  sessionUUId: string
+}
 
-export type ConversationDataType = {
-  conversationId: string
+export type SuggestActionType = {
+  label: string
+  actionInfo: ActionInfoType
+}
+
+export type ActionHandleResultType = {
+  sessionUUId: string
+  canFeedback?: boolean // default: true
   viewElementInfos: ViewElementInfoType[]
   suggestActions?: SuggestActionType[]
 }
@@ -45,6 +55,10 @@ export interface ISysErrorInfo {
 
 export interface ISysChatBox {
   placeholder?: string
+}
+
+export interface ISysMarkdown {
+  content: string
 }
 
 abstract class AbsViewEleInfo<T> implements ViewElementInfoType {
@@ -70,6 +84,12 @@ export class SysViewElementInfo {
   static ChatBox = class cls extends AbsViewEleInfo<ISysChatBox> {
     constructor(info: ISysChatBox, expectation?: string) {
       super('SYS_CHAT_BOX', info, expectation)
+    }
+  }
+
+  static Markdown = class cls extends AbsViewEleInfo<ISysMarkdown> {
+    constructor(info: ISysMarkdown, expectation?: string) {
+      super('SYS_MARKDOWN', info, expectation)
     }
   }
 
