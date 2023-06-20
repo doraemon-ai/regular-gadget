@@ -1,52 +1,38 @@
 import ReactDOM from 'react-dom'
 import View from './src/View'
 import controller from './src/Controller'
-import { InstallParams, ConversationDataType, IViewElementProps, SYS_ACTION_NAME } from './Interface'
-import React from 'react'
+import { InstallProps, ActionHandleResultType, IViewElementProps } from './Interface'
 
-let onReceiveHandleResult: ((data: ConversationDataType) => void) | undefined | null
+let onReceiveActHandleRes: ((data: ActionHandleResultType) => void) | undefined | null
+
+export let gid: string
 
 export default {
 
-  bootstrap: async (props: InstallParams) => {
-    onReceiveHandleResult = props.onReceiveConversationData
+  bootstrap: async (props: InstallProps) => {
+    gid = props.gid
+    onReceiveActHandleRes = props.onReceiveActionHandleResult
     return Promise.resolve()
   },
 
   unmount: async (props: any) => {
-    onReceiveHandleResult = undefined
-    ReactDOM.unmountComponentAtNode(
-      props.container ? props.container.querySelector('#root') : document.getElementById('root'),
-    )
+    onReceiveActHandleRes = undefined
+    ReactDOM.unmountComponentAtNode(props.container)
   },
 
-  mount: async (props: { container: any, name: string, onGlobalStateChange: (params: any) => void }) => {
-    props.onGlobalStateChange((state: any, prev: any) => { // state: 变更后的状态; prev 变更前的状态
-      if (state.type === 'ACTION') {
-        console.log('监听event', state)
-
-        controller.handleAction(state.params)
-          .then(res => onReceiveHandleResult?.(res))
-          .catch(err => {
-            console.error(err)
-          })
-      } else if (state.type === 'FEEDBACK') {
-        console.log(state.params)
+  mount: async (props: { container: any, onGlobalStateChange: (params: any) => void }) => {
+    props.onGlobalStateChange((event: { category: string, params: any }, prevEvent: any) => { // event: 变更后的状态; prevEvent 变更前的状态
+      switch (event.category) {
+        case 'ACTION':
+          controller.handleAction(event.params).then(res => onReceiveActHandleRes?.(res)).catch(err => console.error(err))
+          break
+        case 'FEEDBACK':
+          controller.handleFeedback(event.params)
+          break
       }
     })
 
-    ReactDOM.render(<div />, props.container ? props.container.querySelector('#root') : document.getElementById('root'))
-
-    setTimeout(() => {
-      controller.handleAction({
-        action: SYS_ACTION_NAME.INITIALIZATION,
-        expectation: 'init gadget: ' + props.name,
-      })
-        .then(res => onReceiveHandleResult?.(res))
-        .catch(err => {
-          console.error(err)
-        })
-    }, 300)
+    ReactDOM.render(<div />, props.container)
   },
 
   update: async (props: IViewElementProps): Promise<any> => {
@@ -59,15 +45,17 @@ export default {
         data={data}
         expectation={expectation}
         onSendAction={(actionInfo) => {
-          actionInfo.expectation = expectation
-          controller.handleAction(actionInfo).then(res => onReceiveHandleResult?.(res))
+          if (!actionInfo.expectation) {
+            actionInfo.expectation = expectation
+          }
+          controller.handleAction(actionInfo).then(res => onReceiveActHandleRes?.(res)).catch(err => console.error(err))
         }}
       />
       ,
       document.getElementById(containerId),
     )
 
-    return null
+    return Promise.resolve()
   },
 
 }
