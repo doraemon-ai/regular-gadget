@@ -1,14 +1,22 @@
-import { ActionInfoType, ConversationDataType, SYS_ACTION_NAME } from '../Interface'
+import { ActionInfoType, ActionHandleResultType, SYS_ACTION_NAME, FeedbackInfoType } from '../Interface'
+import { gid } from '../index'
 import axios from 'axios'
+import { ViewType } from './View'
 
 class Controller {
 
-  public async handleAction({ action, expectation, values }: ActionInfoType): Promise<ConversationDataType> {
+  constructor() {
+    console.log('gid', gid)
+  }
+
+  public handleFeedback(feedbackInfo: FeedbackInfoType) {}
+
+  public async handleAction({ action, expectation, values }: ActionInfoType): Promise<ActionHandleResultType> {
     console.log('handle action:', action, expectation, values)
 
     if (action === SYS_ACTION_NAME.INITIALIZATION || action === 'RE_INPUT') {
       return {
-        conversationId: 'id:' + Math.random(),
+        sessionUUId: 'id:' + Math.random(),
         viewElementInfos: [{
           viewType: 'REGULAR_FORM',
           data: {},
@@ -30,11 +38,12 @@ class Controller {
           'Content-Type': 'application/json',
         },
       })
-        .then(res => {
+        .then((res: any) => {
           return {
-            conversationId: 'id:' + Math.random(),
+            sessionUUId: 'id:' + Math.random(),
             viewElementInfos: [{
-              viewType: 'CARD_LIST', data: {
+              viewType: ViewType.CARD_LIST,
+              data: {
                 origin_text: values.originText,
                 agent_output: res.data.agent_output,
                 agent_reasoning: res.data.agent_reasoning,
@@ -45,7 +54,7 @@ class Controller {
         })
     }
 
-    return { conversationId: '', viewElementInfos: [] } // default
+    return { sessionUUId: '', viewElementInfos: [] } // default
   }
 }
 

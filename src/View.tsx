@@ -1,13 +1,17 @@
 import { ActionInfoType, IViewElementProps } from '../Interface'
 import { Button, Card, Col, Form, Input, Row, Select } from 'antd'
 
+export enum ViewType {
+  CARD_LIST = 'CARD_LIST'
+}
+
 export default (
   {
     viewType, data, expectation, onSendAction: sendAction,
   }: IViewElementProps & { onSendAction: (actionInfo: ActionInfoType) => void },
 ) => {
 
-  if (viewType === 'CARD_LIST') {
+  if (viewType === ViewType.CARD_LIST) {
     return <Row gutter={16}>
       {data.agent_output.map(item => {
         return <Col span={12}>
