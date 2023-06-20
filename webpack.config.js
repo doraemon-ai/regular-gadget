@@ -7,7 +7,7 @@ module.exports = {
   entry: './index.tsx',
   mode: 'production',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'build'),
     filename: 'gadget.js',
     libraryTarget: 'umd',
     umdNamedDefine: true,
@@ -33,6 +33,13 @@ module.exports = {
             },
           }
         ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
       }
     ]
   },
@@ -41,17 +48,17 @@ module.exports = {
       title: pkgInfo.name,
       meta: {
         id: pkgInfo.id,
-        name:pkgInfo.name,
-        icon:pkgInfo.icon,
-        version:pkgInfo.version,
-        description:pkgInfo.description,
-        homepage:pkgInfo.homepage,
-        author:pkgInfo.author,
-        keywords:pkgInfo.keywords,
-        email:pkgInfo.bugs.email,
-        bugReport:pkgInfo.bugs.url
+        name: pkgInfo.name,
+        icon: pkgInfo.icon,
+        version: pkgInfo.version,
+        description: pkgInfo.description,
+        homepage: pkgInfo.homepage,
+        author: pkgInfo.author,
+        keywords: pkgInfo.keywords,
+        email: pkgInfo.bugs.email,
+        bugReport: pkgInfo.bugs.url
       },
-      filename:'index.html',
+      filename: 'index.html',
       template: 'index.html',
     })
   ]
