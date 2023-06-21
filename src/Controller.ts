@@ -30,7 +30,7 @@ class Controller {
     if (action === 'GENERATE_REGULARITY') {
       return axios({
         method: 'get',
-        url: 'https://doraemon-ai.zeabur.app/regular',
+        url: 'https://doraemon-server.vercel.app/regular',
         params: {
           user_text: values.originText,
           user_highlight: values.selectText.join(','),
