@@ -1,9 +1,9 @@
-import ReactDOM from 'react-dom'
+import ReactDOM, { Container } from 'react-dom'
 import View from './src/View'
 import controller from './src/Controller'
 import { InstallProps, ActionHandleResultType, IViewElementProps } from './Interface'
 
-let onReceiveActHandleRes: ((data: ActionHandleResultType) => void) | undefined | null
+let onReceiveActHandleRes: ((data: ActionHandleResultType) => void) | null
 
 export let gid: string
 
@@ -15,13 +15,12 @@ export default {
     return Promise.resolve()
   },
 
-  unmount: async (props: any) => {
-    onReceiveActHandleRes = undefined
-    controller.onDestroy()
+  unmount: async (props: { container: Element | DocumentFragment }) => {
+    onReceiveActHandleRes = null
     ReactDOM.unmountComponentAtNode(props.container)
   },
 
-  mount: async (props: { container: any, onGlobalStateChange: (params: any) => void }) => {
+  mount: async (props: { container: Container, onGlobalStateChange: (params: any) => void }) => {
     props.onGlobalStateChange((event: { category: string, params: any }, prevEvent: any) => { // event: 变更后的状态; prevEvent 变更前的状态
       switch (event.category) {
         case 'ACTION':
@@ -37,23 +36,13 @@ export default {
   },
 
   update: async (props: IViewElementProps): Promise<any> => {
-    const { isReadonly, containerId, viewType, data, expectation } = props
+    const { isReadonly, containerId, viewType, data, expectation, onSendAction } = props
     ReactDOM.render(
       <View
-        containerId={containerId}
-        isReadonly={isReadonly}
-        viewType={viewType}
-        data={data}
-        expectation={expectation}
-        onSendAction={(actionInfo) => {
-          if (!actionInfo.expectation) {
-            actionInfo.expectation = expectation
-          }
-          controller.handleAction(actionInfo).then(res => onReceiveActHandleRes?.(res)).catch(err => console.error(err))
-        }}
+        isReadonly={isReadonly} containerId={containerId} viewType={viewType}
+        expectation={expectation} data={data} onSendAction={onSendAction}
       />
-      ,
-      document.getElementById(containerId),
+      , document.getElementById(containerId),
     )
 
     return Promise.resolve()
