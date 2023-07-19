@@ -8,20 +8,22 @@ export enum SYS_ACTION_NAME {
 }
 
 export type InstallProps = {
-  onReceiveActionHandleResult: ((data: ActionHandleResultType) => void) | undefined
+  onReceiveActionHandleResult?: (data: ActionHandleResultType) => void
   envInfo: Record<string, any>
   gid: string
+  getView: (func: (props: IViewElementProps) => JSX.Element) => void
+  sendEvent: (func: (category: string, params: any) => void | Promise<any>) => void
 }
 
 export type ViewElementInfoType = {
   viewType: string // view类型。如：SYS_CHAT_BOX/SYS_MARKDOWN/...
-  data: any // view渲染所需的数据
+  data: any // view 渲染所需的数据
   expectation?: string // 期望用户做的事情
 }
 
 export interface IViewElementProps extends ViewElementInfoType {
   containerId: string // view容器的id
-  isReadonly: boolean // view是否是只读状态
+  onSendAction: (actionInfo: ActionInfoType) => void
 }
 
 export type ActionInfoType = {
