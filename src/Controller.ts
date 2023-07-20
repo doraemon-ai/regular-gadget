@@ -7,7 +7,6 @@ class Controller {
 
   public onCreate(gid: string) {
     console.log('gid', gid) // dynamic id
-    localStorage.setItem(md5(gid + 'key_custom'), 'custom_value') // Private key
   }
 
   public onDestroy(){}
