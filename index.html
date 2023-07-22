@@ -6,14 +6,18 @@
 </head>
 
 <body>
-  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.6.3/antd.css">-->
   <div id="root">
     <div style='display: flex;align-items: center;flex-direction: column'>
       <img
         style="margin-top: 100px;border-radius: 12px" alt="doraemon"
         height="300" width="300" src="<%= htmlWebpackPlugin.options.meta.icon %>"
       />
-      <h1>Load <%= htmlWebpackPlugin.options.title %> success!</h1>
+      <h1>Load
+        <span style="color: #0b74d5">
+          <%= htmlWebpackPlugin.options.title %>
+        </span>
+        success!
+      </h1>
     </div>
   </div>
 </body>

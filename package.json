@@ -1,13 +1,13 @@
 {
   "id": "32a74f98-1aef-473a-bda7-8e2dea9d5b64",
-  "name": "regular-gadget",
+  "name": "doraemon-regular-gadget",
   "version": "0.0.1",
   "description": "支持正则提取的AI魔法道具",
   "icon": "https://chatgptdemo.com/wp-content/uploads/2023/04/regex-thumbnail-square.png",
   "homepage": "https://regex.ai",
   "bugs": {
-    "url": "https://github.com/kaleai",
-    "email": "kaleai@qq.com"
+    "url": "https://discord.com/invite/AZPWnBUGmP",
+    "email": "https://regex.ai/aboutus"
   },
   "keywords": [
     "regular"

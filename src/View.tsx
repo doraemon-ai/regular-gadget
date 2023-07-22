@@ -1,9 +1,16 @@
 import { ActionInfoType, IViewElementProps } from '../Interface'
 import { Button, Card, Col, Form, Input, Row, Select, message } from 'antd'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { ACTION } from './Controller'
 
 export enum ViewType {
-  CARD_LIST = 'CARD_LIST'
+  REGULAR_FORM = 'REGULAR_FORM', // 正则表单
+  CARD_LIST = 'CARD_LIST', // 卡片列表
+}
+
+export const KEY = {
+  ORIGIN_TEXT: 'originText',
+  SELECTED_WORD: 'selectedWord'
 }
 
 export default (
@@ -14,38 +21,37 @@ export default (
 
   if (viewType === ViewType.CARD_LIST) {
     return <Row gutter={16}>
-      {data.agent_output.map((item: string) => {
+      {data.regularExpressionList.map((item: string) => {
         return <Col key={'key_' + item} span={12}>
           <Card title={item} extra={
             <CopyToClipboard
               text={item}
-              onCopy={() => message.success({ content: 'copy success~'})}
+              onCopy={() => message.success({ content: '复制成功🎉' })}
             >
-              <Button type={'link'}>Copy</Button>
+              <Button type={'link'}>复制</Button>
             </CopyToClipboard>
           }>
-            {data.origin_text}
+            {data.originText}
           </Card>
         </Col>
       })}
     </Row>
   }
 
-  if (viewType === 'REGULAR_FORM') {
+  if (viewType === ViewType.REGULAR_FORM) {
     return <Form onFinish={values => {
-      console.log('values', values)
       sendAction({
-        action: 'GENERATE_REGULARITY',
+        action: ACTION.GENERATE,
         values,
         expectation,
       })
     }}
     >
-      <Form.Item label={'原始文本'} name={'originText'}>
+      <Form.Item label={'原始文本'} name={KEY.ORIGIN_TEXT} required>
         <Input />
       </Form.Item>
 
-      <Form.Item label={'需要提取的文本（可多个）'} name={'selectText'}>
+      <Form.Item label={'需要提取的文本（可多个）'} name={KEY.SELECTED_WORD} required>
         <Select mode="tags" tokenSeparators={[',']} />
       </Form.Item>
 
