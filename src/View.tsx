@@ -10,28 +10,25 @@ export enum ViewType {
 
 export const KEY = {
   ORIGIN_TEXT: 'originText',
-  SELECTED_WORD: 'selectedWord'
+  SELECTED_WORD: 'selectedWord',
 }
 
-export default (
-  {
-    viewType, data, expectation, onSendAction: sendAction,
-  }: IViewElementProps & { onSendAction: (actionInfo: ActionInfoType) => void },
-) => {
-
+export default ({ viewType, data, expectation, onSendAction: sendAction }: IViewElementProps) => {
   if (viewType === ViewType.CARD_LIST) {
     return <Row gutter={16}>
-      {data.regularExpressionList.map((item: string) => {
-        return <Col key={'key_' + item} span={12}>
-          <Card title={item} extra={
+      {data.regularExpressionList.map((rule: string, index) => {
+        return <Col key={'key_' + rule} span={12}>
+          <Card title={rule} extra={
             <CopyToClipboard
-              text={item}
+              text={rule}
               onCopy={() => message.success({ content: '复制成功🎉' })}
             >
               <Button type={'link'}>复制</Button>
             </CopyToClipboard>
           }>
-            {data.originText}
+            {data.originText.match(new RegExp(
+              rule.replace('\n','')
+            ))}
           </Card>
         </Col>
       })}
@@ -39,19 +36,21 @@ export default (
   }
 
   if (viewType === ViewType.REGULAR_FORM) {
-    return <Form onFinish={values => {
-      sendAction({
-        action: ACTION.GENERATE,
-        values,
-        expectation,
-      })
-    }}
+    return <Form
+      validateMessages={{ required: '\'${label}\' 是必选字段' }}
+      onFinish={values => {
+        sendAction({
+          action: ACTION.GENERATE,
+          values,
+          expectation,
+        })
+      }}
     >
-      <Form.Item label={'原始文本'} name={KEY.ORIGIN_TEXT} required>
+      <Form.Item label={'原始文本'} name={KEY.ORIGIN_TEXT} rules={[{ required: true }]}>
         <Input />
       </Form.Item>
 
-      <Form.Item label={'需要提取的文本（可多个）'} name={KEY.SELECTED_WORD} required>
+      <Form.Item label={'需要提取的文本（可多个）'} name={KEY.SELECTED_WORD} rules={[{ required: true }]}>
         <Select mode="tags" tokenSeparators={[',']} />
       </Form.Item>
 

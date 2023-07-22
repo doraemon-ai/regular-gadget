@@ -31,7 +31,9 @@ import { InstallProps, IViewElementProps } from './Interface'
 export default {
 
   bootstrap: async (props: InstallProps) => {
-    props.getView((props: IViewElementProps) => <View {...props} />)
+    props.getView((props: IViewElementProps, id: string) => {
+      ReactDOM.render(<View {...props} />, document.getElementById(id))
+    })
     props.sendEvent((category: string, params: any) => {
       console.log('[Gadget App] handle event', category, params)
 
@@ -50,5 +52,5 @@ export default {
   unmount: async (props: { container: Element }) => {
     controller.onDestroy()
     ReactDOM.unmountComponentAtNode(props.container)
-  }
+  },
 }
